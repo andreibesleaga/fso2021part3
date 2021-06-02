@@ -10,34 +10,34 @@ const url = `mongodb+srv://fullstack:${password}@cluster0.fjhoo.mongodb.net/myFi
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+  name: String,
+  number: String
 })
 
 const Person = mongoose.model('Person', personSchema)
 
 
 if(process.argv.length===5) {
-    const cname = process.argv[3]
-    const cnumber = process.argv[4]
+  const cname = process.argv[3]
+  const cnumber = process.argv[4]
 
-    const person = new Person({
-        name: cname,
-        number: cnumber
-    })
+  const person = new Person({
+    name: cname,
+    number: cnumber
+  })
 
-    person.save().then(result => {
-        console.log(`Added ${cname} ${cnumber} to phonebook`)
-        mongoose.connection.close()
-    })
-            
+  person.save().then(result => {
+    console.log(`Added ${cname} ${cnumber} to phonebook`)
+    mongoose.connection.close()
+  })
+
 } else {
-    Person.find({}).then(result => {
-        result.forEach(note => {
-          console.log(note)
-        })
-        mongoose.connection.close()
-      })
+  Person.find({}).then(result => {
+    result.forEach(note => {
+      console.log(note)
+    })
+    mongoose.connection.close()
+  })
 }
 
 

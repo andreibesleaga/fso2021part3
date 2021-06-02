@@ -29,10 +29,10 @@ app.get('/', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    var crtTime = new Date().toString()  
-    Person.countDocuments({}).then(docCount => {
-      response.send('Phonebook has info for ' + docCount + " people  <br />\r\n " + crtTime)
-    })
+  var crtTime = new Date().toString()
+  Person.countDocuments({}).then(docCount => {
+    response.send('Phonebook has info for ' + docCount + ' people  <br />\r\n ' + crtTime)
+  })
     .catch(err => {
       response.send('Phonebook error getting users from MongoDB  <br />\r\n ' + crtTime)
     })
@@ -42,7 +42,7 @@ app.get('/api/persons', (request, response, next) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -53,33 +53,33 @@ app.get('/api/persons/:id', (request, response, next) => {
       response.status(404).end()
     }
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 
 app.post('/api/persons', (request, response, next) => {
-    const body = request.body
-    
-    if (!body.name || body.name===undefined) {
-      return response.status(400).json({error: 'Name missing' })
+  const body = request.body
+
+  if (!body.name || body.name===undefined) {
+    return response.status(400).json({ error: 'Name missing' })
+  }
+  if(!body.number || body.number===undefined) {
+    return response.status(400).json({ error: 'Number missing'  })
+  }
+  Person.findOne({ name: body.name }).then( person => {
+    if(person) {
+      return response.status(400).json({ error: 'Name already exists' })
+    } else {
+      const person = new Person ({
+        name: body.name,
+        number: body.number
+      })
+      person.save().then(savedPerson => {
+        response.json(savedPerson)
+      })
+        .catch(error => next(error))
     }
-    if(!body.number || body.number===undefined) {
-        return response.status(400).json({ error: 'Number missing'  })    
-    }    
-    Person.findOne({name: body.name}).then( person => {
-      if(person) {
-        return response.status(400).json({ error: 'Name already exists' })
-      } else {
-          const person = new Person ({
-            name: body.name,
-            number: body.number
-          })
-          person.save().then(savedPerson => {
-            response.json(savedPerson)
-          })
-          .catch(error => next(error))
-      }
-    })
+  })
     .catch(error => next(error))
 })
 
