@@ -113,6 +113,19 @@ const App = () => {
         setMessage({type:'info',message:`${newName} added to server`})
         setTimeout(() => { setMessage(null) }, 5000)
       })
+      .catch(error => {
+          // Error
+          var emessage = 'Error saving person to server'
+          if (error.response && error.response.data) {
+            emessage = error.response.data.error
+          } else if (error.request) {
+            emessage = error.request;
+          } else {
+            emessage = error.message;
+          }        
+        setMessage({type:'error',message:`${emessage}`})
+        setTimeout(() => { setMessage(null) }, 5000)
+      })
       setNewName('')
       setNewNumber('')
     } else {
@@ -123,7 +136,16 @@ const App = () => {
           setMessage({type:'info', message:`${newName} number updated on server`})
           setTimeout(() => { setMessage(null) }, 5000)
         }).catch(error => {
-          setMessage({type:'error', message:`Error updating person on server`})
+          // Error
+          var emessage = 'Error updating person on server'
+          if (error.response && error.response.data) {
+            emessage = error.response.data.error
+          } else if (error.request) {
+            emessage = error.request;
+          } else {
+            emessage = error.message;
+          }        
+          setMessage({type:'error',message:`${emessage}`})
           setTimeout(() => { setMessage(null) }, 5000)
           getAll()
         })
