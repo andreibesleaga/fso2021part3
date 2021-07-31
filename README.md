@@ -1,1 +1,3 @@
-# fso2021part3
+# FSO 2021 Part 3
+
+Programming a server with NodeJS and Express
