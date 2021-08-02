@@ -1,3 +1,3 @@
-# FSO 2021 Part 3
+# Full Stack Open 2021 - 3
 
 Programming a server with NodeJS and Express
